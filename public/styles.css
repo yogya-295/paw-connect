@@ -4,3 +4,21 @@
 @media(max-width:700px){.sort-label{width:100%;justify-content:space-between}.sort-label select{flex:1}.results-note{text-align:left}}
 /* Paw Connect 3.0: stray rescue, local partners and optional profiles */
 .feature-section{padding:82px 9.2%;display:grid;grid-template-columns:.85fr 1.15fr;gap:9%;align-items:start;border-top:1px solid var(--line)}.feature-heading h2{font:800 clamp(35px,4vw,51px)/1.1 var(--display);letter-spacing:-2.5px;margin:15px 0}.feature-heading h2 em{font-family:var(--serif);font-weight:400;color:#63815e}.feature-heading p{font-size:13px;line-height:1.85;color:var(--muted)}.privacy-note{padding:12px;background:#eeeee4;border-radius:5px;font-size:11px!important}.feature-form{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:25px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.feature-form h3{grid-column:1/-1;font:700 20px var(--display);margin:0}.feature-form label{display:block;font-size:11px;font-weight:700;color:#53594f}.feature-form input,.feature-form textarea,.feature-form select{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid #deded3;border-radius:4px;background:#fffefa;font:12px var(--sans);max-width:100%}.feature-form label:has(textarea),.feature-form button,.feature-form .feedback,.feature-form .nearby-results,.feature-form .field-help{grid-column:1/-1}.field-help{font-size:10px;color:var(--muted);margin-top:-10px}.partner-section{background:#eeeee4}.partner-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.shelter-lookup{display:block}.shelter-lookup form{display:grid;gap:14px}.shelter-lookup p{font-size:12px;color:var(--muted);line-height:1.7}.nearby-results{font-size:12px;line-height:1.7}.nearby-card{border:1px solid var(--line);border-radius:5px;padding:12px;margin-top:10px;background:#fffefa}.nearby-card strong,.nearby-card span{display:block}.nearby-card span{color:var(--muted);font-size:11px}.profile-section{background:#f7f5ef}.profile-section .feature-form{max-width:650px}.feature-form button:disabled{opacity:.6;cursor:wait}@media(max-width:850px){.feature-section{padding:65px 6%;grid-template-columns:1fr;gap:25px}.partner-grid{grid-template-columns:1fr}}@media(max-width:550px){.feature-form{grid-template-columns:1fr;padding:18px}.feature-form label,.feature-form label:has(textarea),.feature-form button,.feature-form .feedback,.feature-form .nearby-results,.feature-form .field-help{grid-column:1}.feature-heading h2{font-size:39px}}
+.creator-credit {
+  text-align: center;
+  padding: 10px 15px;
+  background: #eeeae1;
+  color: #77736a;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  border-bottom: 1px solid #e5e0d5;
+}
+
+.creator-credit strong {
+  color: #25251f;
+  font-weight: 800;
+}
+
+.team-credit {
+  color: #77736a;
+}
