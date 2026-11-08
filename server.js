@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -12,7 +13,35 @@ fs.mkdirSync(uploadDir, { recursive: true });
 const db = new Database(path.join(__dirname, 'pawconnect.db'));
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
+async function sendTelegramAlert(message) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
 
+  if (!token || !chatId) {
+    console.warn('Telegram credentials not configured');
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.telegram.org/bot${token}/sendMessage`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        })
+      }
+    );
+
+    if (!response.ok) {
+      console.error('Telegram alert failed:', await response.text());
+    }
+  } catch (error) {
+    console.error('Telegram notification error:', error.message);
+  }
+}
 app.disable('x-powered-by');
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -136,6 +165,18 @@ app.post('/api/adoption-requests', (req,res) => {
   if (phone.replace(/\D/g,'').length<7) return res.status(400).json({error:'Please enter a valid phone number.'});
   const pet=db.prepare("SELECT * FROM pets WHERE id=? AND status='Available'").get(petId); if(!pet) return res.status(404).json({error:'This pet is no longer available.'});
   const result=db.prepare('INSERT INTO adoption_requests (pet_id,applicant_name,email,phone,message) VALUES (?,?,?,?,?)').run(petId,applicant_name,email,phone,message);
+  void sendTelegramAlert(
+  `🏡 NEW ADOPTION REQUEST
+
+Request ID: ${result.lastInsertRowid}
+Pet ID: ${petId}
+Applicant: ${applicant_name}
+Email: ${email}
+Phone: ${phone}
+Message: ${message}
+
+Please review in Paw Connect Admin Portal.`
+);
   res.status(201).json({message:'Your adoption request has been sent privately to the Paw Connect founder for review.',request_id:result.lastInsertRowid});
 });
 
@@ -145,6 +186,18 @@ app.post('/api/stray-reports', (req,res,next) => imageUpload.single('photo')(req
   if(!validAnimalTypes.has(animal_type)||!description||!location||!reporter_name||reporter_phone.replace(/\D/g,'').length<7){fs.unlink(req.file.path,()=>{});return res.status(400).json({error:'Complete all required details and enter a valid contact number.'});}
   const r=db.prepare('INSERT INTO stray_reports (animal_type,description,location,landmark,urgency,image_path,reporter_name,reporter_phone) VALUES (?,?,?,?,?,?,?,?)').run(animal_type,description,location,landmark,['Urgent','High','Normal'].includes(urgency)?urgency:'Normal',`/uploads/${req.file.filename}`,reporter_name,reporter_phone);
   const city=location.split(',')[0].trim();
+  void sendTelegramAlert(
+  `🐾 NEW ANIMAL REPORT
+
+Report ID: ${r.lastInsertRowid}
+Animal: ${animal_type}
+Urgency: ${urgency}
+Location: ${location}
+Landmark: ${landmark}
+Description: ${description}
+
+Please check the Paw Connect Admin Portal.`
+);
   const shelters=db.prepare("SELECT id,name,kind,phone,email,city,address,services FROM shelters WHERE status='Approved' AND lower(city)=lower(?) ORDER BY name").all(city);
   res.status(201).json({success:true,report_id:r.lastInsertRowid,message:'Report sent to the Paw Connect founder for follow-up.',nearby_shelters:shelters});
 });
@@ -155,7 +208,19 @@ app.post('/api/donations',(req,res)=>{
  if(!donor_name||!Number.isFinite(amount)||amount<1||amount>1000000||Math.round(amount*100)!==amount*100) return res.status(400).json({error:'Enter your name and a valid donation amount between ₹1 and ₹10,00,000.'});
  if(donor_email&&!validEmail(donor_email)) return res.status(400).json({error:'Enter a valid email address or leave it blank.'});
  const r=db.prepare('INSERT INTO donations (donor_name,donor_email,amount_paise,message,payment_reference) VALUES (?,?,?,?,?)').run(donor_name,donor_email,Math.round(amount*100),message,payment_reference);
- res.status(201).json({success:true,donation_id:r.lastInsertRowid,amount, payment_status:'Pending verification',message:`Donation record #${r.lastInsertRowid} created. This demo does not collect money or verify a payment; the founder must verify the payment separately.`});
+ void sendTelegramAlert(
+  `💰 NEW DONATION RECEIVED
+
+Donation ID: ${r.lastInsertRowid}
+Donor: ${donor_name}
+Amount: ₹${amount.toFixed(2)}
+Payment Reference: ${payment_reference || 'Not provided'}
+
+Status: PENDING VERIFICATION
+
+Please verify the UPI payment manually in Paw Connect Admin Portal.`
+);
+res.status(201).json({success:true,donation_id:r.lastInsertRowid,amount,payment_status:'Pending verification',message:`Payment details submitted as record #${r.lastInsertRowid}. The founder must verify the UPI transaction manually; submitting this form does not itself confirm payment.`});
 });
 app.get('/api/donation-transparency',(_req,res)=>{
  const totals=db.prepare("SELECT COALESCE(SUM(amount_paise),0) AS n FROM donations WHERE payment_status='Verified'").get().n;

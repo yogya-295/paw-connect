@@ -57,8 +57,85 @@
 </section>
 <section class="feature-section" id="report"><div class="feature-heading"><div class="eyebrow">SEE AN ANIMAL IN NEED?</div><h2>Be their <em>first step.</em></h2><p>Upload a photo, share the location and a short description. The report goes privately to the Paw Connect founder for follow-up.</p><p class="privacy-note">No account needed. Please keep a safe distance from injured or frightened animals.</p></div><form id="strayForm" class="feature-form" enctype="multipart/form-data"><label>Animal type<select name="animal_type" required><option value="Indian street dog / Indie">Indian street dog / Indie</option><option value="Indian street cat">Indian street cat</option><option value="Cow / cattle">Cow / cattle</option><option value="Monkey">Monkey</option><option value="Bird">Bird</option><option value="Other">Other</option></select></label><label>Photo of animal<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required></label><small class="field-help">JPG, PNG or WEBP · maximum 5 MB</small><label>Location / city<input name="location" required maxlength="120" placeholder="e.g. Sector 17, Yamuna Nagar, Haryana"></label><label>Nearby landmark (optional)<input name="landmark" maxlength="180" placeholder="Shop, street, park or landmark"></label><label>Urgency<select name="urgency"><option>Normal</option><option>High</option><option>Urgent</option></select></label><label>What did you notice?<textarea name="description" required maxlength="1000" rows="3" placeholder="Injured, trapped, needs food/water, puppies nearby…"></textarea></label><label>Your name<input name="reporter_name" required maxlength="100" placeholder="Your name"></label><label>Your phone<input name="reporter_phone" required maxlength="25" type="tel" placeholder="Contact number for follow-up"></label><button class="btn btn-dark" type="submit">Send rescue report ↗</button><div id="strayFeedback" class="feedback" role="status"></div><div id="nearbyResults" class="nearby-results"></div></form></section>
 <section class="feature-section partner-section" id="shelters"><div class="feature-heading"><div class="eyebrow">LOCAL RESCUE NETWORK</div><h2>Connect the <em>helpers.</em></h2><p>Animal shelters, NGOs, rescue volunteers and veterinary clinics can submit their details. The founder reviews every submission before it appears publicly.</p></div><div class="partner-grid"><form id="shelterForm" class="feature-form"><h3>Register a shelter / NGO</h3><label>Organisation name<input name="name" required maxlength="120"></label><label>Type<select name="kind"><option>Animal shelter</option><option>NGO</option><option>Rescue volunteer</option><option>Veterinary clinic</option></select></label><label>Contact person<input name="contact_name" required maxlength="100"></label><label>Phone<input name="phone" required maxlength="25" type="tel"></label><label>Email<input name="email" required type="email" maxlength="150"></label><label>City<input name="city" required maxlength="100" placeholder="Yamuna Nagar"></label><label>Address<input name="address" required maxlength="250"></label><label>Services / animals helped<textarea name="services" required maxlength="600" rows="3" placeholder="Rescue, treatment, temporary shelter, adoption…"></textarea></label><button class="btn btn-dark" type="submit">Submit partner details ↗</button><div id="shelterFeedback" class="feedback" role="status"></div></form><div class="feature-form shelter-lookup"><h3>Find approved local helpers</h3><p>Search a city to see partner organisations approved by the Paw Connect founder.</p><form id="shelterSearchForm"><label>City<input id="shelterCity" required placeholder="e.g. Yamuna Nagar"></label><button class="btn btn-dark" type="submit">Find nearby helpers ↗</button></form><div id="shelterResults" class="nearby-results"></div></div></div></section>
-<section class="feature-section profile-section" id="profile"><div class="feature-heading"><div class="eyebrow">YOUR SPACE, YOUR CHOICE</div><h2>Create your <em>profile.</em></h2><p>No login is required to browse, report a stray or send an adoption request. If you want a separate Paw Connect profile, you can create one here — entirely optional.</p></div><form id="profileForm" class="feature-form"><label>Display name<input name="display_name" required maxlength="100" placeholder="Your name"></label><label>Email<input name="email" type="email" required maxlength="150" placeholder="you@example.com"></label><label>Phone<input name="phone" required maxlength="25" type="tel" placeholder="Contact number"></label><label>City<input name="city" required maxlength="100" placeholder="Your city"></label><label>About you (optional)<textarea name="about" maxlength="500" rows="3" placeholder="Tell us why you care about animals…"></textarea></label><button class="btn btn-dark" type="submit">Create my profile ↗</button><div id="profileFeedback" class="feedback" role="status"></div></form></section>
-<section class="feature-section donation-section" id="donate"><div class="feature-heading"><div class="eyebrow">TRANSPARENT HELP, REAL IMPACT</div><h2>Give what you <em>can.</em></h2><p>Choose any amount to support food, first aid, transport and treatment for Indian community animals. We want every donor to be able to see how verified donations are used.</p><p class="privacy-note">This classroom version records donation intentions only. It does not collect money or confirm payments. Use an official payment gateway/verified UPI setup before accepting real donations. Public proof is added only by the founder after checking receipts.</p><div class="donation-totals" id="donationTotals">Loading transparency ledger…</div><div id="donationUses" class="nearby-results"></div></div><form id="donationForm" class="feature-form"><h3>Support an animal</h3><label>Your name<input name="donor_name" required maxlength="100" placeholder="Your name"></label><label>Donation amount (₹)<input name="amount" type="number" min="1" max="1000000" step="0.01" required placeholder="Any amount"></label><label>Email (optional)<input name="donor_email" type="email" maxlength="150" placeholder="For your record"></label><label>Payment reference (optional)<input name="payment_reference" maxlength="120" placeholder="Reference after a real payment"></label><label class="wide">Message (optional)<textarea name="message" maxlength="400" rows="3" placeholder="If you'd like to dedicate this donation…"></textarea></label><button class="btn btn-dark" type="submit">Record my donation ↗</button><div id="donationFeedback" class="feedback" role="status"></div></form></section>
+<section class="feature-secti<section class="feature-section donation-section" id="donate">
+  <div class="feature-heading">
+    <div class="eyebrow">TRANSPARENT HELP, REAL IMPACT</div>
+    <h2>Give what you <em>can.</em></h2>
+
+    <p>Your contribution can help support food, first aid,
+    transport and care for Indian community animals.</p>
+
+    <div class="feature-form">
+      <h3>Pay using FamPay UPI</h3>
+
+      <p>Our UPI ID</p>
+      <h3 id="pawUpiId">yogya5911@fam</h3>
+
+      <button class="btn btn-dark" type="button"
+        onclick="navigator.clipboard.writeText('yogya5911@fam').then(()=>alert('UPI ID copied!'))">
+        Copy UPI ID
+      </button>
+
+      <p style="margin-top:18px">
+        <a class="btn btn-dark"
+          href="upi://pay?pa=yogya5911%40fam&pn=Paw%20Connect&cu=INR">
+          Pay via UPI ↗️
+        </a>
+      </p>
+    </div>
+
+    <p class="privacy-note">
+      Important: Payments go directly to the personal UPI
+      account of the project founder, Yogya Kaushish.
+      Paw Connect is a student project, not a registered NGO.
+      Contributions are voluntary and are not eligible for
+      charitable tax exemption. Please verify the recipient
+      name in your UPI app before paying.
+    </p>
+
+    <div class="donation-totals" id="donationTotals">
+      Loading transparency ledger…
+    </div>
+    <div id="donationUses" class="nearby-results"></div>
+  </div>
+
+  <form id="donationForm" class="feature-form">
+    <h3>Submit payment details</h3>
+
+    <label>Your name
+      <input name="donor_name" required maxlength="100"
+        placeholder="Your name">
+    </label>
+
+    <label>Donation amount (₹)
+      <input name="amount" type="number" min="1"
+        max="1000000" step="0.01" required
+        placeholder="Amount paid">
+    </label>
+
+    <label>Email (optional)
+      <input name="donor_email" type="email"
+        maxlength="150" placeholder="For your record">
+    </label>
+
+    <label>UPI Transaction ID / UTR
+      <input name="payment_reference" required
+        maxlength="120" placeholder="Enter your UTR number">
+    </label>
+
+    <label class="wide">Message (optional)
+      <textarea name="message" maxlength="400" rows="3"
+        placeholder="Your message for the animals…"></textarea>
+    </label>
+
+    <button class="btn btn-dark" type="submit">
+      Submit for verification ↗️
+    </button>
+
+    <div id="donationFeedback" class="feedback" role="status"></div>
+  </form>
+</section></section>on profile-section" id="profile"><div class="feature-heading"><div class="eyebrow">YOUR SPACE, YOUR CHOICE</div><h2>Create your <em>profile.</em></h2><p>No login is required to browse, report a stray or send an adoption request. If you want a separate Paw Connect profile, you can create one here — entirely optional.</p></div><form id="profileForm" class="feature-form"><label>Display name<input name="display_name" required maxlength="100" placeholder="Your name"></label><label>Email<input name="email" type="email" required maxlength="150" placeholder="you@example.com"></label><label>Phone<input name="phone" required maxlength="25" type="tel" placeholder="Contact number"></label><label>City<input name="city" required maxlength="100" placeholder="Your city"></label><label>About you (optional)<textarea name="about" maxlength="500" rows="3" placeholder="Tell us why you care about animals…"></textarea></label><button class="btn btn-dark" type="submit">Create my profile ↗</button><div id="profileFeedback" class="feedback" role="status"></div></form></section>
+<div class="feature-heading"><div class="eyebrow">TRANSPARENT HELP, REAL IMPACT</div><h2>Give what you <em>can.</em></h2><p>Choose any amount to support food, first aid, transport and treatment for Indian community animals. We want every donor to be able to see how verified donations are used.</p><p class="privacy-note">This classroom version records donation intentions only. It does not collect money or confirm payments. Use an official payment gateway/verified UPI setup before accepting real donations. Public proof is added only by the founder after checking receipts.</p><div class="donation-totals" id="donationTotals">Loading transparency ledger…</div><div id="donationUses" class="nearby-results"></div></div><form id="donationForm" class="feature-form"><h3>Support an animal</h3><label>Your name<input name="donor_name" required maxlength="100" placeholder="Your name"></label><label>Donation amount (₹)<input name="amount" type="number" min="1" max="1000000" step="0.01" required placeholder="Any amount"></label><label>Email (optional)<input name="donor_email" type="email" maxlength="150" placeholder="For your record"></label><label>Payment reference (optional)<input name="payment_reference" maxlength="120" placeholder="Reference after a real payment"></label><label class="wide">Message (optional)<textarea name="message" maxlength="400" rows="3" placeholder="If you'd like to dedicate this donation…"></textarea></label><button class="btn btn-dark" type="submit">Record my donation ↗</button><div id="donationFeedback" class="feedback" role="status"></div></form></section>
 <section class="how-section" id="how"><div class="how-intro"><div class="eyebrow">SMALL STEPS, BIG LOVE</div><h2>Love finds<br>a <em>way.</em></h2><p>Bringing a new friend home should feel good from the very first step. Here's how we make it simple.</p><a class="btn btn-light" href="#pets">Start your story <span>↗</span></a></div><div class="steps"><article class="step"><span class="step-no">01</span><div><h3>Meet your match</h3><p>Browse the pets, learn their personalities, and find the one that feels right.</p></div><span class="step-icon">⌕</span></article><article class="step"><span class="step-no">02</span><div><h3>Tell us about yourself</h3><p>Send a friendly adoption request so the team can learn about your home.</p></div><span class="step-icon">♡</span></article><article class="step"><span class="step-no">03</span><div><h3>Make it official</h3><p>Connect, ask questions, and prepare a safe, loving space for your new friend.</p></div><span class="step-icon">✳</span></article></div></section>
 <section class="mission" id="story"><div class="mission-photo"><img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=1000&q=85" alt="Dog being cared for"></div><div class="mission-copy"><div class="eyebrow">MORE THAN A WEBSITE</div><h2>Because love<br>shouldn't have<br>to <em>wait.</em></h2><p>Paw Connect brings kind people and deserving animals closer together. We're here to make responsible adoption easier, one connection at a time.</p><div class="mission-signoff"><span class="signoff-paw">🐾</span><span><strong>Every paw matters.</strong><small>Every connection counts.</small></span></div></div></section>
 <section class="bottom-cta"><div><span class="cta-spark">✳</span><h2>Your best friend<br>is waiting to meet you.</h2><p>Ready to make someone's whole world?</p></div><a class="btn btn-dark" href="#pets">Find your forever friend <span>↗</span></a></section>

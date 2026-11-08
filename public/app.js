@@ -157,5 +157,35 @@ async function loadDonationTransparency(){
  const totals=document.getElementById('donationTotals'), target=document.getElementById('donationUses'); if(!totals)return;
  try{const r=await fetch('/api/donation-transparency');const d=await r.json();if(!r.ok)throw new Error();const money=n=>'₹'+(n/100).toLocaleString('en-IN',{maximumFractionDigits:2});totals.innerHTML=`<div class="nearby-card"><strong>Verified donations: ${money(d.verified_donations_paise)}</strong><span>Published documented animal-care expenses: ${money(d.published_use_paise)}</span></div>`;target.innerHTML=d.uses.length?d.uses.map(u=>`<div class="nearby-card"><strong>${escapeHTML(u.purpose)}</strong><span>Amount used: ${money(u.amount_paise)} · ${escapeHTML(u.created_at)}</span><a href="${escapeHTML(u.proof_url)}" target="_blank" rel="noopener">View receipt / proof ↗</a></div>`).join(''):'<p class="field-help">No expense proofs have been published yet. The founder will add verified receipts here.</p>';}catch(_){totals.textContent='Transparency ledger is temporarily unavailable.';}
 }
-document.getElementById('donationForm')?.addEventListener('submit',async e=>{e.preventDefault();const formEl=e.currentTarget,button=formEl.querySelector('button[type=submit]');button.disabled=true;setFeedback('donationFeedback','Recording donation details…');try{const response=await fetch('/api/donations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(formEl).entries()))});const result=await response.json();if(!response.ok)throw new Error(result.error||'Could not record donation.');setFeedback('donationFeedback',`Record #${result.donation_id}: ${result.message}`);formEl.reset();}catch(err){setFeedback('donationFeedback',err.message,true);}finally{button.disabled=false;button.textContent='Record my donation ↗';}});
+document.getElementById('donationForm')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  const formEl = e.currentTarget;
+  const button = formEl.querySelector('button[type=submit]');
+
+  button.disabled = true;
+  setFeedback('donationFeedback', 'Submitting payment details…');
+
+  try {
+    const response = await fetch('/api/donations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(formEl).entries()))
+    });
+
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || 'Could not submit donation details.');
+
+    setFeedback(
+      'donationFeedback',
+      `Record #${result.donation_id} submitted. Status: Pending verification. The founder will verify the payment manually.`
+    );
+    formEl.reset();
+
+  } catch (err) {
+    setFeedback('donationFeedback', err.message, true);
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Submit for verification ↗️';
+  }
+});
 loadDonationTransparency();
