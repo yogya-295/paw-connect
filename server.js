@@ -263,4 +263,4 @@ app.use((err,_req,res,_next)=>{if(err instanceof multer.MulterError)return res.s
 app.use('/api',(_req,res)=>res.status(404).json({error:'API route not found.'}));
 app.get('/admin',(_req,res)=>res.sendFile(path.join(__dirname,'public','admin.html')));
 app.get('*',(_req,res)=>res.sendFile(path.join(__dirname,'public','index.html')));
-app.listen(PORT,()=>console.log(`🐾 Paw Connect v3 running at http://localhost:${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`🐾 Paw Connect v3 running on port ${PORT}`));
